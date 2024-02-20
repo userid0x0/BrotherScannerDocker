@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include 'lib/config.php';
 exec("ps aux | grep '[s]canimage'", $output, $retVal);
 if(!empty($output)) {
     echo("scanning");

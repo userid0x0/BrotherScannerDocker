@@ -1,8 +1,12 @@
 <?php
+include "lib/lib.php"
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $files = array_diff(scandir("/scans", SCANDIR_SORT_DESCENDING), array('..', '.'));
+
+    $path = '/scans';
+    $files = getFileList($path, GETFILELIST_SORT_CREATEDATE_DESC);
     for ($i = 0; $i < min(10, count($files)); $i++) {
-            echo "<a class='listitem' href=/download.php?file=".$files[$i].">".$files[$i]."</a><br>";
+            echo "<a class='listitem' href=/download.php?file=" . $files[$i] . ">" . $files[$i] . "</a><br>";
     }
 }
 else {

@@ -1,6 +1,6 @@
 <html>
 <head>
-<?php include 'config.php'; ?>
+<?php include 'lib/config.php'; ?>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="main.css">
 <title>Brother <?php echo($MODEL); ?></title>

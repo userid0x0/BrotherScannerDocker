@@ -44,10 +44,10 @@ RUN cd /tmp && \
 
 RUN lighty-enable-mod auth && lighty-enable-mod fastcgi && lighty-enable-mod fastcgi-php && lighty-enable-mod access
 RUN RUN cat <<EOF >> /etc/lighttpd/lighttpd.conf
-	$HTTP["url"] =~ "^/lib" {
-        url.access-deny = ("")
-    }
-	EOF
+$HTTP["url"] =~ "^/lib" {
+	url.access-deny = ("")
+}
+EOF
 
 RUN mkdir -p /var/run/lighttpd
 RUN touch /var/run/lighttpd/php-fastcgi.socket

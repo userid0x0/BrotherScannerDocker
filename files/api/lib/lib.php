@@ -1,4 +1,4 @@
 <?php
-include "listfiles.php"
-include "subdircheck.php"
+include "listfiles.php";
+include "subdircheck.php";
 ?>

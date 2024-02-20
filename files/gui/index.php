@@ -71,12 +71,6 @@
 			   ?>
 			<div class="subtitle">Last scanned:</div>
 			<div id="files">
-			<?php
-					$files = array_diff(scandir("/scans", SCANDIR_SORT_DESCENDING), array('..', '.'));
-					for ($i = 0; $i < min(10, count($files)); $i++) {
-							echo "<a class='listitem' href=/download.php?file=".$files[$i].">".$files[$i]."</a><br>";
-					}
-			?>
 			</div>
 	</div>
 </body>

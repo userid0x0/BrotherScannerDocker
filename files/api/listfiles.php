@@ -1,5 +1,5 @@
 <?php
-include "lib/lib.php"
+include "lib/lib.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 

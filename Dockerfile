@@ -46,9 +46,9 @@ RUN lighty-enable-mod auth || true; \
     lighty-enable-mod fastcgi || true; \
     lighty-enable-mod fastcgi-php || true; \
     lighty-enable-mod access || true
-	
-RUN RUN cat <<EOF >> /etc/lighttpd/lighttpd.conf
-$HTTP["url"] =~ "^/lib" {
+
+RUN cat <<EOF >> /etc/lighttpd/lighttpd.conf
+\$HTTP["url"] =~ "^/lib" {
 	url.access-deny = ("")
 }
 EOF

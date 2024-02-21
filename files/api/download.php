@@ -3,12 +3,11 @@ include_once(__DIR__."/lib/lib.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-        $SCAN_FOLDER = "/scans/";
 
         if(array_key_exists("file", $_GET)) {
                 $filename = $_GET["file"];
-                $filepath=$SCAN_FOLDER . $filename;
-                if(file_exists($filepath) && is_sub_dir($filepath, $SCAN_FOLDER)) {
+                $filepath=$SCANS_DIR . $filename;
+                if(file_exists($filepath) && is_sub_dir($filepath, $SCANS_DIR)) {
                         header("Content-type: " . (mime_content_type($filepath) || 'application/octet-stream'));
                         header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
                         readfile($filepath);

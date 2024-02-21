@@ -6,8 +6,6 @@ error_reporting(E_ALL);
 include_once(__DIR__."/lib/config.php");
 include_once(__DIR__."/lib/lib.php");
 
-$SCRIPTS_DIR = "/opt/brother/scanner/brscan-skey/script/";
-
 function exit_error() {
         http_reponse_code(400);
         die("Error: Thou shalt not inject unknown script names!");
@@ -22,7 +20,7 @@ if (empty($target)) {
 }
 if (in_array($target, array('file','email','image','ocr'))) {
 
-        $script = $SCRIPTS_DIR . DS . "scanto" . $target . ".sh";
+        $script = $SCRIPTS_DIR . "/scanto" . $target . ".sh";
 
         if(!is_sub_dir($script, $SCRIPTS_DIR)) {
                 exit_error();

@@ -1,6 +1,7 @@
 <?php
+include_once(__DIR__."/lib/lib.php");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $files = array_diff(scandir("/scans", SCANDIR_SORT_DESCENDING), array('..', '.'));
+        $files = getFileList($SCANS_DIR, GETFILELIST_SORT_CREATEDATE_DESC);
         $num = $_GET["num"] ?? count($files);
         for ($i = 0; $i < $num; $i++) {
                 echo $files[$i]."<br>";

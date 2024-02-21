@@ -1,4 +1,4 @@
-<?php include(dirname(__DIR__).'/lib/config.php'); ?>
+<?php include(__DIR__.'/lib/config.php'); ?>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -1,5 +1,5 @@
 <?php
-include(dirname(__DIR__)."/lib/config.php");
+include_once(__DIR__."/lib/config.php");
 
 exec("ps aux | grep '[s]canimage'", $output, $retVal);
 if(!empty($output)) {

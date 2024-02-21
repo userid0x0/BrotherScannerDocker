@@ -1,5 +1,5 @@
 <?php
-include(dirname(__DIR__)."/lib/lib.php");
+include_once(__DIR__."/lib/lib.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 

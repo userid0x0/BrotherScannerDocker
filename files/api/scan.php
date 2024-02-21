@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include(dirname(__DIR__)."/lib/config.php");
-include(dirname(__DIR__)."/lib/lib.php");
+include_once(__DIR__."/lib/config.php");
+include_once(__DIR__."/lib/lib.php");
 
 $SCRIPTS_DIR = "/opt/brother/scanner/brscan-skey/script/";
 

@@ -1,4 +1,4 @@
 <?php
-include(dirname(__DIR__)."/listfiles.php");
-include(dirname(__DIR__)."/subdircheck.php");
+include_once(__DIR__."/listfiles.php");
+include_once(__DIR__."/subdircheck.php");
 ?>

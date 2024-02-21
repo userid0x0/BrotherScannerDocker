@@ -7,7 +7,7 @@ include_once(__DIR__."/lib/config.php");
 include_once(__DIR__."/lib/lib.php");
 
 function exit_error() {
-        http_reponse_code(400);
+        http_response_code(400);
         die("Error: Thou shalt not inject unknown script names!");
 }
 
@@ -15,7 +15,7 @@ function exit_error() {
 $target = $_POST["target"] ?? ($_GET["target"] ?? '');
 
 if (empty($target)) {
-        http_reponse_code(400);
+        http_response_code(400);
         die("Error: No scanning function selected (try append: ?target=<file|email|image|ocr>)");
 }
 if (in_array($target, array('file','email','image','ocr'))) {

@@ -12,15 +12,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
                         readfile($filepath);
                 } else {
-                        http_reponse_code(404);
+                        http_response_code(404);
                         die("Error: File does not exist!");
                 }
         } else {
-                http_reponse_code(400);
+                http_response_code(400);
                 die("Error: No file provided!");
         }
 } else {
-        http_reponse_code(405);
+        http_response_code(405);
         die("Error: Method not allowed!");
 }
 ?>

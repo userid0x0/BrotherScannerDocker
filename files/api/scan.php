@@ -22,7 +22,7 @@ if (in_array($target, array('file','email','image','ocr'))) {
 
         $script = $SCRIPTS_DIR . "/scanto" . $target . ".sh";
 
-        if(!is_sub_dir($script, $SCRIPTS_DIR)) {
+        if(!is_sub_path($script, $SCRIPTS_DIR)) {
                 exit_error();
         }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

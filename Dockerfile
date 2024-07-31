@@ -2,15 +2,10 @@ FROM debian:bookworm-slim AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive 
 
-RUN apt-get update && apt-get -y --no-install-recommends install \
-		wget \
-		ca-certificates
+ADD https://download.brother.com/welcome/dlf105200/brscan4-0.4.11-1.amd64.deb /tmp
 
-RUN cd /tmp && \
-	wget https://download.brother.com/welcome/dlf105200/brscan4-0.4.11-1.amd64.deb
-
-RUN cd /tmp && \
-	wget https://download.brother.com/welcome/dlf006652/brscan-skey-0.3.1-2.amd64.deb
+ADD https://download.brother.com/welcome/dlf006652/brscan-skey-0.3.2-0.amd64.deb /tmp
+	
 
 FROM debian:bookworm-slim
 
@@ -32,15 +27,15 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 		iputils-ping \
 		&& apt-get -y clean
 
-COPY --from=builder /tmp/brscan4-0.4.11-1.amd64.deb /tmp/brscan4-0.4.11-1.amd64.deb
+COPY --from=builder /tmp/brscan4-*.deb /tmp
 RUN cd /tmp && \
-	dpkg -i /tmp/brscan4-0.4.11-1.amd64.deb && \
-	rm /tmp/brscan4-0.4.11-1.amd64.deb
+	dpkg -i /tmp/brscan4-*.deb && \
+	rm /tmp/brscan4-*.deb
 
-COPY --from=builder /tmp/brscan-skey-0.3.1-2.amd64.deb /tmp/brscan-skey-0.3.1-2.amd64.deb
+COPY --from=builder /tmp/brscan-skey-*.deb /tmp
 RUN cd /tmp && \
-	dpkg -i /tmp/brscan-skey-0.3.1-2.amd64.deb && \
-	rm /tmp/brscan-skey-0.3.1-2.amd64.deb
+	dpkg -i /tmp/brscan-skey-*.deb && \
+	rm /tmp/brscan-skey-*.deb
 
 RUN lighty-enable-mod auth || true; \
     lighty-enable-mod fastcgi || true; \

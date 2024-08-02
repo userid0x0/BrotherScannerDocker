@@ -2,21 +2,32 @@ FROM debian:bookworm-slim AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive 
 
+ADD https://download.brother.com/welcome/dlf006642/brscan3-0.2.13-1.amd64.deb /tmp
+ADD https://download.brother.com/welcome/dlf105200/brscan4-0.4.11-1.amd64.deb /tmp
+
+ADD https://download.brother.com/welcome/dlf006652/brscan-skey-0.3.2-0.amd64.deb /tmp
+
 RUN apt-get update && apt-get -y --no-install-recommends install \
-		wget \
-		ca-certificates
+		apt-file \
+		binutils \
+		&& rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN cd /tmp && \
-	wget https://download.brother.com/welcome/dlf105200/brscan4-0.4.11-1.amd64.deb
+RUN mkdir -p /tmp/dep && \
+	cd /tmp/dep && \
+	apt-file update && \
+	find /tmp -name '*.deb' -exec ar x \{\} \; -exec tar -xzf data.tar.gz \; && \
+	(( find . -type f '(' -name '*.so*' -o -name 'brsane*' ')' -exec ldd \{\} \; 2>/dev/null) | awk '/not found/{print $1}' | sort | uniq | xargs -r -n1 apt-file search | grep : | cut -f1 -d: | sort | uniq > /tmp/deps) && \
+	rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN cd /tmp && \
-	wget https://download.brother.com/welcome/dlf006652/brscan-skey-0.3.1-2.amd64.deb
 
 FROM debian:bookworm-slim
 
 ARG DEBIAN_FRONTEND=noninteractive 
 
+COPY --from=builder /tmp/deps /tmp/deps
+
 RUN apt-get update && apt-get -y --no-install-recommends install \
+		$(cat /tmp/deps) \
 		sane \
 		sane-utils \
 		netbase \
@@ -32,15 +43,12 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 		iputils-ping \
 		&& apt-get -y clean
 
-COPY --from=builder /tmp/brscan4-0.4.11-1.amd64.deb /tmp/brscan4-0.4.11-1.amd64.deb
-RUN cd /tmp && \
-	dpkg -i /tmp/brscan4-0.4.11-1.amd64.deb && \
-	rm /tmp/brscan4-0.4.11-1.amd64.deb
+COPY --from=builder /tmp/brscan3*.deb /tmp/brscan4*.deb /opt
 
-COPY --from=builder /tmp/brscan-skey-0.3.1-2.amd64.deb /tmp/brscan-skey-0.3.1-2.amd64.deb
+COPY --from=builder /tmp/brscan-skey-*.deb /tmp
 RUN cd /tmp && \
-	dpkg -i /tmp/brscan-skey-0.3.1-2.amd64.deb && \
-	rm /tmp/brscan-skey-0.3.1-2.amd64.deb
+	dpkg -i /tmp/brscan-skey-*.deb && \
+	rm /tmp/brscan-skey-*.deb
 
 RUN lighty-enable-mod auth || true; \
     lighty-enable-mod fastcgi || true; \
@@ -63,6 +71,7 @@ ENV NAME="Scanner"
 ENV MODEL="MFC-L2700DW"
 ENV IPADDRESS="192.168.1.123"
 ENV USERNAME="NAS"
+ENV BRSCAN=4
 
 #only set these variables, if inotify needs to be triggered (e.g., for Synology Drive):
 ENV SSH_USER=""

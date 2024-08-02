@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mandatory_vars=(NAME MODEL IPADDRESS)
+mandatory_vars=(NAME MODEL IPADDRESS BRSCAN)
 missing=0
 for var in "${mandatory_vars[@]}"
 do
@@ -57,8 +57,16 @@ echo "whole config:"
 cat /opt/brother/scanner/brscan-skey/brscan-skey.config
 echo "-----"
 
+echo "installing scanner drivers..."
+dpkg -i /opt/brscan${BRSCAN}-*.deb
+# thanks https://wiki.ubuntuusers.de/Scanner/Brother/
+# <workaround for brscan3>
+ln -sf /usr/lib64/libbrscandec3* /usr/lib
+ln -sf /usr/lib64/libbrscandec3* /usr/lib/x86_64-linux-gnu
+# </workaround for brscan3>
+
 echo "starting scanner drivers..."
-driver_cmds=("/usr/bin/brsaneconfig4 -a name=$NAME model=$MODEL ip=$IPADDRESS" /usr/bin/brscan-skey)
+driver_cmds=("/usr/bin/brsaneconfig${BRSCAN} -a name=$NAME model=$MODEL ip=$IPADDRESS" /usr/bin/brscan-skey)
 for cmd in "${driver_cmds[@]}"
 do
 	#check if failed

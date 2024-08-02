@@ -87,6 +87,7 @@ You can configure the tool via environment variables:
 | ------------- | ------------- | ------------- |
 | NAME  | mandatory | Arbitrary name to give your scanner. |
 | USERNAME  | optional | Displayed on scanner, if multiple servers are running. |
+| BRSCAN | optional | brscanX version to use (default: 4) |
 | MODEL  | mandatory | Model of your scanner (e.g., MFC-L2700DW) |
 | IPADDRESS | mandatory | IP Address of your scanner |
 | RESOLUTION | optional | DPI resolution of scan, refer to capabilities of printer on startup |

@@ -4,6 +4,7 @@ include_once(__DIR__."/lib/lib.php");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $files = getFileList($SCANS_DIR, GETFILELIST_SORT_CREATEDATE_DESC);
+    $files = array_values( array_filter($files, function($k) { return preg_match("/\.pdf$/", $k); }) );
     for ($i = 0; $i < min(10, count($files)); $i++) {
             $replaced = str_replace($SCANS_DIR."/", "", $files[$i]);
             echo "<a class='listitem' href=/download.php?file=" . $replaced . ">" . $replaced . "</a><br>";

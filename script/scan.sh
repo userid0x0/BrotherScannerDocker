@@ -21,6 +21,7 @@ main() {
   latest=$(get_latest)
 
   mkdir -p "${workdir}"
+  wait_for_scanner
   scan "${workdir}" "${unixtime}"
   convert "${workdir}" "${outfile_scan}"
   merge "${workdir}" "${latest}" "${outfile_merge}"

@@ -22,6 +22,18 @@ get_latest () {
 
 # -----------------------------------------------------------------------------
 
+wait_for_scanner () {
+  local i rc
+  for i in $(seq 5); do
+    echo "[info] Try #${i} to reach scanner"
+    sleep 1
+    scanimage -n >/dev/null 2>&1
+    rc=$?
+    [ ${rc} -eq 0 ] && return
+  done
+  echo "[info] Scanner seems to be unreachable - continue anyway"
+}
+
 scan () {
   local scan_cmd workdir unixtime outfile_pattern
   workdir="$1"
@@ -79,6 +91,9 @@ convert () {
   outfile="$2"
 
   files=( ${workdir}/*.pnm )
+
+  [ ${#files[@]} -eq 0 ] && echo "No '.pnm' files found, skip convert." && return
+
   run_convert "${outfile}" "${files[@]}"
   trigger_inotify "${outfile}"
   upload "${outfile}"
@@ -97,12 +112,12 @@ merge () {
   outfile="$3"
 
   [ -z "${latest}" ] && return
-  [ ! -d "${latest}" ] && echo "Path '${latest}' doesn't exist, skipping merge." && return
+  [ ! -d "${latest}" ] && echo "Path '${latest}' doesn't exist, skip merge." && return
 
   latest_files=( ${latest}/*.pnm )
   workdir_files=( ${workdir}/*.pnm )
 
-  [ ${#latest_files[@]} -ne ${#workdir_files[@]} ] && echo "Pagecount doesn't match (${#latest_files[@]} != ${#workdir_files[@]}), skipping merge." && return
+  [ ${#latest_files[@]} -ne ${#workdir_files[@]} ] && echo "Pagecount doesn't match (${#latest_files[@]} != ${#workdir_files[@]}), skip merge." && return
 
   cnt=${#latest_files[@]}
   merge_files=()
